@@ -32,6 +32,14 @@ function App() {
         console.error(error);
       });
   }, []);
+  
+  const handleToggleTask = (taskId) => {
+  };
+
+  const tabs = [
+    { title: "incomplete", filterfn: (task) => !task.is_completed },
+    { title: "completed", filterfn: (task) => task.is_completed },
+  ];
 
   return (
     <div className="container my-3 mx-auto">
@@ -48,26 +56,23 @@ function App() {
       <Container>
         <Tab.Container defaultActiveKey="incomplete">
           <Nav variant="tabs" className="justify-content-center">
-            <Nav.Item>
-              <Nav.Link eventKey="incomplete">Incomplete</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link eventKey="completed">Completed</Nav.Link>
-            </Nav.Item>
+            {tabs.map(({ title }) => (
+              <Nav.Item key={title}>
+                <Nav.Link eventKey={title}>{title}</Nav.Link>
+              </Nav.Item>
+            ))}
           </Nav>
 
           <div className="mb-3 mt-md-4">
             <Tab.Content className="justify-content-center">
-            <TodoTasksPane
-                  title="incomplete"
-                  tasks={tasks.filter((task) => !task.is_completed)}
+              {tabs.map(({ title, filterfn }) => (
+                <TodoTasksPane
+                  key={title}
+                  title={title}
+                  tasks={tasks.filter(filterfn)}
                   setTasks={setTasks}
                 />
-               <TodoTasksPane
-                  title="completed"
-                  tasks={tasks.filter((task) => task.is_completed)}
-                  setTasks={setTasks}
-                />
+              ))}
             </Tab.Content>
           </div>
         </Tab.Container>
