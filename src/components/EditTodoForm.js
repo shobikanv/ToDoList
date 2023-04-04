@@ -1,19 +1,12 @@
-import React from 'react';
-import { Tab, Nav, Container, Form, Row, Col, Button } from "react-bootstrap";
-export default function EditTodoForm() 
+import axios from "axios";
+import { Form, Row, Col, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const baseURL = "http://127.0.0.1:8000/api/tasks";
+
+export default function EditTodoForm({task,updateTask,setEditTask}) 
 {
-    const updateTask = (id, updatedTitle) => {
-        axios
-          .put(`${baseURL}/${id}`, { task_title: updatedTitle })
-          .then((response) => {
-            setTasks(tasks.map((task) => (task.id === id ? response.data : task)));
-            window.location.reload();
-            setEditTask(null);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      };
+
     return ( <Form
         onSubmit={(e) => {
           e.preventDefault();

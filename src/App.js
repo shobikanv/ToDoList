@@ -5,22 +5,9 @@ import React, { useState, useEffect } from "react";
 import { Tab, Nav, Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TodoList from "./components/TodoList";
+import TodoTabs from "./components/TodoTabs";
 
 const baseURL = "http://127.0.0.1:8000/api/tasks";
-
-function TodoTabs({tabs}) {
-  return (
-    <Nav variant="tabs" className="justify-content-center">
-      {tabs.map(({ title }) => (
-        <Nav.Item key={title}>
-          <Nav.Link eventKey={title}>{title}</Nav.Link>
-        </Nav.Item>
-      ))}
-    </Nav>
-  );
-}
-
-
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -47,12 +34,11 @@ function App() {
       <div className="d-flex justify-content-center">
         <AddTask tasks={tasks} setTasks={setTasks} />
       </div>
-
       <Container>
         <Tab.Container defaultActiveKey="incomplete">
           <TodoTabs tabs={tabs} />
 
-          <TodoList tabs={tabs} tasks={tasks} setTasks={setTasks}/>
+          <TodoList tabs={tabs} tasks={tasks} setTasks={setTasks} />
         </Tab.Container>
       </Container>
     </div>

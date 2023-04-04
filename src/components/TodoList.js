@@ -9,8 +9,7 @@ const baseURL = "http://127.0.0.1:8000/api/tasks";
 
 export default function TodoList({ tasks, setTasks, tabs }) {
   const [editTask, setEditTask] = useState(null);
-  console.log("taskksksks", tasks);
-
+  
   const toggleComplete = (id) => {
     const task = tasks.find((task) => task.id === id);
     axios
@@ -29,7 +28,18 @@ export default function TodoList({ tasks, setTasks, tabs }) {
     window.location.reload();
   };
 
-
+  const updateTask = (id, updatedTitle) => {
+    axios
+      .put(`${baseURL}/${id}`, { task_title: updatedTitle })
+      .then((response) => {
+        setTasks(tasks.map((task) => (task.id === id ? response.data : task)));
+        window.location.reload();
+        setEditTask(null);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const deleteTask = (id) => {
     const confirmDelete = window.confirm(
@@ -60,12 +70,21 @@ export default function TodoList({ tasks, setTasks, tabs }) {
                   className="list-group-item d-flex justify-content-between align-items-center"
                 >
                   {editTask === task.id ? (
-                    <EditTodoForm />
+                    <EditTodoForm
+                      task={task}
+                      updateTask={updateTask}
+                      setEditTask={setEditTask}
+                    />
                   ) : (
                     <>
                       {task.task_title}
 
-                      <TodoItemButtons toggleComplete={toggleComplete} setEditTask={setEditTask} deleteTask={deleteTask} task={task}/>
+                      <TodoItemButtons
+                        toggleComplete={toggleComplete}
+                        setEditTask={setEditTask}
+                        deleteTask={deleteTask}
+                        task={task}
+                      />
                     </>
                   )}
                 </li>
